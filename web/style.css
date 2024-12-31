@@ -1,0 +1,10 @@
+html {
+    background-color: #2a2a2a;
+}
+
+#chartContainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

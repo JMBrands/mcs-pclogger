@@ -8,12 +8,12 @@ def log(scheduler: sched.scheduler):
     data: dict
     with open("data.json", 'r') as f:
         data = json.load(f)
-    data["data"].append({"time": time.time(), "players": checkplayers.checkplayers("noob-friendly.com")})
+    data["data"].append({"time": time.time() * 1000, "players": checkplayers.checkplayers("noob-friendly.com")})
     
     with open("data.json", 'w') as f:
         json.dump(data, f)
 
 if __name__ == "__main__":
     logger = sched.scheduler(time.time, time.sleep)
-    logger.enter(0, 1, log, (logger,))
+    logger.enter(time.time() % 3600, 1, log, (logger,))
     logger.run()

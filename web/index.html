@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>
+        window.onload = function() {
+                
+            var dataPoints = [];
+            
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "dark1",
+                zoomEnabled: true,
+                title: {
+                    text: "Noob-Friendly player count"
+                },
+                axisY: {
+                    title: "Players",
+                    titleFontSize: 24
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: dataPoints
+                }]
+            });
+
+            function addData(data) {
+                var dps = data.data;
+                for (var i = 0; i < dps.length; i++) {
+                    dataPoints.push({
+                        x: new Date(dps[i].time),
+                        y: dps[i].players
+                    });
+                }
+                chart.render();
+            }
+
+            $.getJSON("/data.json", addData);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Noob-Friendly Player count graph</title>
+</head>
+<body>
+    <div id="chartContainer" style="height: 90%; width: 90%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+    
+</body>
+</html>
