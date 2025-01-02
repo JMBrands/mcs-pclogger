@@ -2,11 +2,10 @@
 <?php
 $dotenv = fopen("../.env", "r");
 $line = fgets($dotenv);
-
 $pass = explode("\n", explode("=", $line)[1])[0];
 
 $sql = new mysqli(
-	"localhost",
+	"192.168.1.242",
 	"nf-monitor",
 	$pass,
 	"nf-monitor"
@@ -27,6 +26,11 @@ $len = $result->num_rows;
 for ($i = 0; $i < $len; $i++) {
 	array_push($dps, array("x" => $res[$i][0], "y" => intval($res[$i][1])));
 }
+
+$cur = array();
+$status = 0;
+exec("python log.py debug", $cur, $status);
+$cur = $cur[0];
 
 ?>
 <html lang="en">
@@ -63,7 +67,10 @@ for ($i = 0; $i < $len; $i++) {
     <title>Noob-Friendly Player count graph</title>
 </head>
 <body>
-    <div id="chartContainer" style="height: 90%; width: 90%;"></div>
+    <div id="chartContainer" style="height: 80%; width: 90%;"></div>
+    <div id="currentCount">
+	<p>Current playercount: <?php echo $cur; ?></p>
+    </div>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
     
