@@ -29,7 +29,7 @@ for ($i = 0; $i < $len; $i++) {
 
 $cur = array();
 $status = 0;
-exec("python log.py debug", $cur, $status);
+exec("python3 ../log.py debug", $cur, $status);
 $cur = $cur[0];
 
 ?>

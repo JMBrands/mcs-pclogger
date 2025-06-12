@@ -1,0 +1,11 @@
+[project]
+requires-python = ">=3.9"
+name = "playerlogger"
+version = "1.0.0"
+dependencies = [
+	"build==1.2.2.post1",
+	"click==8.2.1",
+	"packaging==25.0",
+	"pip-tools==7.4.1",
+	"pyproject_hooks==1.2.0",
+]

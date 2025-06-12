@@ -8,7 +8,7 @@ def checkplayers(ip, port: int = 25565):
     s.send(b'\x10\x00\xFF\x05\x09localhost\63\xDD\x01')
     s.send(b'\x00')
     s.send(b'\x01\x00\x00\x00\x00\x00\x00\x00\x00')
-    s.settimeout(2)
+    s.settimeout(0.5)
     status = b""
     data = s.recv(10)
     while True:
