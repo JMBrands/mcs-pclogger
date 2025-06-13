@@ -5,8 +5,7 @@ $settings = $ini["Website"];
 $sql = new mysqli(
 	$ini["Sql"]["hostname"],
 	$ini["Sql"]["username"],
-	$ini["Sql"]["password"],
-	$ini["Sql"]["database"]
+	database: $ini["Sql"]["database"]
 );
 
 $result = mysqli_query($sql, "SELECT * FROM PlayerCount;");
@@ -27,17 +26,20 @@ for ($i = 0; $i < $len; $i++) {
 
 $cur = array();
 $status = 0;
-exec("../log.py", $cur, $status);
+exec("../log.py once", $cur, $status);
 $cur = $cur[0];
 
 ?>
 <html lang="en">
-<head><script>
-        window.onload = function() {
+<head>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+    <script>
+    window.onload = function() {
                 
 	    var dataPoints = <?php echo json_encode($dps, JSON_NUMERIC_CHECK); ?>;
 	    for (var i = 0; i < dataPoints.length; i++) {
-		dataPoints[i].x = new Date(dataPoints[i].x + " GMT+01:00");
+		dataPoints[i].x = new Date(dataPoints[i].x + " GMT+02:00");
 	    }
             console.log(dataPoints); 
             var chart = new CanvasJS.Chart("chartContainer", {
@@ -45,7 +47,7 @@ $cur = $cur[0];
                 theme: "dark1",
                 zoomEnabled: true,
                 title: {
-                    text: $settings["graphtitle"]
+                    text: "<?php echo($settings["graphtitle"]);?>"
                 },
                 axisY: {
                     title: "Players",
@@ -69,8 +71,6 @@ $cur = $cur[0];
     <div id="currentCount">
 	<p>Current playercount: <?php echo $cur; ?></p>
     </div>
-<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
     
 </body>
 </html>

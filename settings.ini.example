@@ -10,5 +10,4 @@ pagetitle=<The title of the webpage>
 [Sql]
 hostname=<hostname>
 username=<username>
-password=<password>
 database=<database>

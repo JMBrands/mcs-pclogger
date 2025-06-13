@@ -9,15 +9,17 @@ from conf4ini import Config
 
 
 def log(scheduler: sched.scheduler, sqls: dict, mains: dict):
-    scheduler.enter(mains["interval"], 1, log, (scheduler, sqls, mains))
-    sql = mysql.connect(sqls["hostname"], sqls["username"], sqls["password"], sqls["database"])
+    if "once" not in sys.argv:
+        scheduler.enter(mains["interval"], 1, log, (scheduler, sqls, mains))
+    sql = mysql.connect(sqls["hostname"], sqls["username"], database=sqls["database"])
     # sql.query(f"INSERT INTO PlayerCount (Time, PlayerCount) VALUE (NOW(), 0);")
     count = checkplayers.checkplayers(mains)
+    print(count)
     sql.query(f"INSERT INTO `PlayerCount` (`Time`, `PlayerCount`) VALUE (NOW(), {count});")
     sql.commit()
     
 if __name__ == "__main__":
-    config = Config()
+    config = Config("..")
     sqls = config["Sql"]
     mains = config["Main"]
     logger = sched.scheduler(time.time, time.sleep)
