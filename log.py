@@ -19,7 +19,12 @@ def log(scheduler: sched.scheduler, sqls: dict, mains: dict):
     sql.commit()
     
 if __name__ == "__main__":
-    config = Config("..")
+    config: Config
+    try:
+        config = Config("..")
+    except FileNotFoundError:
+        config = Config()
+    
     sqls = config["Sql"]
     mains = config["Main"]
     logger = sched.scheduler(time.time, time.sleep)
