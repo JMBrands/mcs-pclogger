@@ -1,0 +1,14 @@
+[Main]
+server=<The minecraft server you want to monitor>
+port=<The port the server is on, usually 25565>
+interval=<The amount of seconds you want between logs>
+
+[Website]
+graphtitle=<The title above the graph>
+pagetitle=<The title of the webpage>
+
+[Sql]
+hostname=<hostname>
+username=<username>
+password=<password>
+database=<database>

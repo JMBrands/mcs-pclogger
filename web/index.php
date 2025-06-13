@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <?php
-$dotenv = fopen("../.env", "r");
-$line = fgets($dotenv);
-$pass = explode("\n", explode("=", $line)[1])[0];
-
+$ini = parse_ini_file("../settings.ini", true);
+$settings = $ini["Website"];
 $sql = new mysqli(
-	"192.168.1.242",
-	"nf-monitor",
-	$pass,
-	"nf-monitor"
+	$ini["Sql"]["hostname"],
+	$ini["Sql"]["username"],
+	$ini["Sql"]["password"],
+	$ini["Sql"]["database"]
 );
 
 $result = mysqli_query($sql, "SELECT * FROM PlayerCount;");
@@ -29,7 +27,7 @@ for ($i = 0; $i < $len; $i++) {
 
 $cur = array();
 $status = 0;
-exec("python3 ../log.py debug", $cur, $status);
+exec("../log.py", $cur, $status);
 $cur = $cur[0];
 
 ?>
@@ -47,7 +45,7 @@ $cur = $cur[0];
                 theme: "dark1",
                 zoomEnabled: true,
                 title: {
-                    text: "Noob-Friendly player count"
+                    text: $settings["graphtitle"]
                 },
                 axisY: {
                     title: "Players",
@@ -64,7 +62,7 @@ $cur = $cur[0];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Noob-Friendly Player count graph</title>
+    <title><?php echo $settings["pagetitle"]?></title>
 </head>
 <body>
     <div id="chartContainer" style="height: 80%; width: 90%;"></div>

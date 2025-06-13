@@ -1,0 +1,13 @@
+-- Run as admin account on a mySQL db
+
+-- Comment if you already have a db you want to use
+CREATE DATABASE <db-name>;
+
+-- Comment if you have a user you want to use
+CREATE USER <username>@'%' IDENTIFIED BY <password>;
+GRANT SELECT, INSERT ON <db-name> TO <username>@'%';
+
+CREATE TABLE PlayerCount {
+    Time timestamp,
+    PlayerCount int
+};

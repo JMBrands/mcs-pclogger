@@ -2,9 +2,9 @@
 import socket
 import json
 
-def checkplayers(ip, port: int = 25565):
+def checkplayers(settings: dict):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, port))
+    s.connect((settings["server"], settings["port"]))
     s.send(b'\x10\x00\xFF\x05\x09localhost\63\xDD\x01')
     s.send(b'\x00')
     s.send(b'\x01\x00\x00\x00\x00\x00\x00\x00\x00')

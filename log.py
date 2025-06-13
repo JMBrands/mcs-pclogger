@@ -4,24 +4,22 @@ import checkplayers
 import sched, time
 import MySQLdb as mysql
 import os
-import dotenv
 import sys
+from conf4ini import Config
 
-dotenv.load_dotenv()
-DEBUG = "debug" in sys.argv
 
-def log(scheduler: sched.scheduler):
-    if not DEBUG:
-        scheduler.enter(900 - (time.time() % 900), 1, log, (scheduler,))
-        sql = mysql.connect("localhost", "nf-monitor", os.getenv("SQLPASS"), "nf-monitor")
+def log(scheduler: sched.scheduler, sqls: dict, mains: dict):
+    scheduler.enter(mains["interval"], 1, log, (scheduler, sqls, mains))
+    sql = mysql.connect(sqls["hostname"], sqls["username"], sqls["password"], sqls["database"])
     # sql.query(f"INSERT INTO PlayerCount (Time, PlayerCount) VALUE (NOW(), 0);")
-    count = checkplayers.checkplayers('noob-friendly.com')
-    print(count)
-    if not DEBUG:
-        sql.query(f"INSERT INTO `PlayerCount` (`Time`, `PlayerCount`) VALUE (NOW(), {count});")
-        sql.commit()
+    count = checkplayers.checkplayers(mains)
+    sql.query(f"INSERT INTO `PlayerCount` (`Time`, `PlayerCount`) VALUE (NOW(), {count});")
+    sql.commit()
     
 if __name__ == "__main__":
+    config = Config()
+    sqls = config["Sql"]
+    mains = config["Main"]
     logger = sched.scheduler(time.time, time.sleep)
-    logger.enter(0 if DEBUG else 900 - (time.time() % 900), 1, log, (logger,))
+    logger.enter(0, 1, log, (logger, sqls, mains))
     logger.run()
